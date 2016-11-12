@@ -11,7 +11,7 @@ import random
 # Protocol :gpg:idnumber:data:end:
 PGP_START=":gpg:"
 PGP_END=":end:"
-MAX_LEN=450 # unsauber, muss eigentlich berrechnet werden (siehe Konversations)
+MAX_LEN=400 # unsauber, muss eigentlich berrechnet werden (siehe Konversations)
 
 GPG_PATH="gpg2"
 
