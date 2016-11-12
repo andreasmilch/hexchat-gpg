@@ -22,6 +22,8 @@ recipients = {}
 messages = {}
 gpg_off_channels = []
 
+reload(
+
 def print_msg(msg="", color="", begin=True, end=True):
     if begin:
         print("")
@@ -54,8 +56,8 @@ def decrypt(raw_data):
     p = subprocess.Popen(shlex.split(cmd), stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
     decrypted, err = p.communicate(raw_data)
     if err:
-        print_msg(err.decode(), color=RED)
-    return decrypted.decode()
+        print_msg(err.decode('utf-8'), color=RED)
+    return decrypted.decode('utf-8')
 
 # returns raw data
 def encrypt(msg, recipients):
@@ -66,7 +68,7 @@ def encrypt(msg, recipients):
     p = subprocess.Popen(shlex.split(cmd), stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
     encrypted_data, err = p.communicate(msg.encode())
     if err:
-        hexchat.prnt(err.decode())
+        hexchat.prnt(err.decode('utf-8'))
     return encrypted_data
 
 def command_hook(word, word_eol, userdata):
@@ -201,12 +203,12 @@ def list_keys(word, word_eol, userdata):
     p = subprocess.Popen(shlex.split(cmd), stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
     out, err = p.communicate()
     if err:
-        hexchat.prnt(err.decode())
+        hexchat.prnt(err.decode('utf-8'))
         return hexchat.EAT_ALL
 
     print_msg("All public keys installed on your computer:", end=False)
 
-    for line in out.decode().split("\n"):
+    for line in out.decode('utf-8').split("\n"):
         if line.startswith("uid"):
             cols = line.split("::")
             print_msg(cols[4], begin=False, end=False)
