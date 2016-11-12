@@ -50,7 +50,7 @@ def split_send(raw_data, verb):
 
 # returns string
 def decrypt(raw_data):
-    cmd = '{} -q --batch'.format(GPG_PATH)
+    cmd = '{} --quiet --batch --trust-model always'.format(GPG_PATH)
     p = subprocess.Popen(shlex.split(cmd), stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
     decrypted, err = p.communicate(raw_data)
     if err:
@@ -59,7 +59,7 @@ def decrypt(raw_data):
 
 # returns raw data
 def encrypt(msg, recipients):
-    cmd = '{} -e --batch'.format(GPG_PATH)
+    cmd = '{} -e --batch --trust-model always'.format(GPG_PATH)
     for name in recipients:
         cmd += ' -r {} '.format(name.strip())
 
@@ -82,14 +82,14 @@ def command_hook(word, word_eol, userdata):
         if not channel in messages:
             return hexchat.EAT_NONE
         
-        print_msg("Messages on this channel should be encrypted.\nPlease choose recipient keys using the command /key_add <key>", RED)
+        print_msg("Messages on this channel should be encrypted.\nPlease choose recipient keys using the command /add_key <key>", RED)
         return hexchat.EAT_ALL
     if not recipients[channel]:
-        print_msg("Messages on this channel should be encrypted.\nPlease choose recipient keys using the command /key_add <key>", RED)
+        print_msg("Messages on this channel should be encrypted.\nPlease choose recipient keys using the command /add_key <key>", RED)
         return hexchat.EAT_ALL
 
     if not recipients[channel][0].strip():
-        print_msg("Messages on this channel should be encrypted.\nPlease choose recipient keys using the command /key_add <key>", RED)
+        print_msg("Messages on this channel should be encrypted.\nPlease choose recipient keys using the command /add_key <key>", RED)
         return hexchat.EAT_ALL 
 
     encrypted = encrypt(word_eol[0], recipients[channel])
