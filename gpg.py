@@ -281,7 +281,7 @@ def store_settings(userdata):
         if setting.startswith("gpg_#"):
             hexchat.del_pluginpref(setting)
     for channel in recipients:
-        if recipients[channel] and not gpg_off_channels[channel]:
+        if recipients[channel] and not channel in gpg_off_channels:
             hexchat.set_pluginpref("gpg_{}".format(channel), ",".join(recipients[channel]))
 
 def load_settings():
